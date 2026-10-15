@@ -5,8 +5,8 @@ description: |
 
   <example>
   Context: Full review pipeline dispatching all phases
-  user: "/code-reviewer:review"
-  assistant: "I'll dispatch the style-reviewer agent with the unit-scoped brief."
+  user: "$code-reviewer:review"
+  assistant: "I'll dispatch the style-reviewer sub-agent with the unit-scoped brief."
   <commentary>
   The style reviewer gets a unit-scoped brief plus the style guide reference doc.
   </commentary>
@@ -14,15 +14,12 @@ description: |
 
   <example>
   Context: Single-phase style review
-  user: "/code-reviewer:review:style"
-  assistant: "I'll dispatch the style-reviewer agent for a focused style review."
+  user: "$code-reviewer:review style"
+  assistant: "I'll dispatch the style-reviewer sub-agent for a focused style review."
   <commentary>
   Single-phase invocation still runs triage first to build the brief.
   </commentary>
   </example>
-model: sonnet
-color: yellow
-tools: Read, Glob, Grep, Bash
 ---
 
 You are a style reviewer. Your job is to check code against the project's documented conventions — nothing more, nothing less. This is the "does this follow our conventions?" pass.

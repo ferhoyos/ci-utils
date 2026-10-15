@@ -1,8 +1,21 @@
 # code-reviewer Plugin
 
-Multi-phase, subagent-driven code review with auto-maintained project conventions. Works natively with both **Claude Code** and **Cursor** as a plugin.
+Multi-phase, subagent-driven code review with auto-maintained project conventions. Works with **Codex**, **Claude Code**, and **Cursor** as a plugin.
 
 ## Installation
+
+### Codex
+
+Register the repository marketplace and enable `code-reviewer` from Codex's
+plugin directory:
+
+```
+codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
+```
+
+Use `$code-reviewer:setup` and `$code-reviewer:review` in Codex. The phase
+skills are available as `$code-reviewer:adversarial-review`,
+`$code-reviewer:style-review`, and `$code-reviewer:testing-review`.
 
 ### Claude Code (via marketplace)
 
@@ -40,7 +53,7 @@ Then restart Cursor or run **Developer: Reload Window**. If you previously symli
 
 ## Commands
 
-> **Note:** In Claude Code, commands are namespaced as `/code-reviewer:review`, `/code-reviewer:setup`, etc. In Cursor, commands appear without a plugin prefix (e.g., `/review`, `/setup`) because Cursor does not yet support `plugin:command` namespacing. This is a [known Cursor limitation](https://forum.cursor.com/t/workspace-skill-resolution-issue-with-identical-skill-names/162287) with an open feature request.
+> **Note:** In Claude Code, commands are namespaced as `/code-reviewer:review`, `/code-reviewer:setup`, etc. In Codex, use `$code-reviewer:review` and `$code-reviewer:setup`; Codex skills launch the specialist prompts in `agents/` as sub-agents. In Cursor, commands appear without a plugin prefix (e.g., `/review`, `/setup`) because Cursor does not yet support `plugin:command` namespacing. This is a [known Cursor limitation](https://forum.cursor.com/t/workspace-skill-resolution-issue-with-identical-skill-names/162287) with an open feature request.
 
 ### `/code-reviewer:setup`
 
@@ -79,6 +92,12 @@ Run the full multi-phase code review pipeline on your current branch changes:
 2. **Parallel dispatch** — sends structured briefs to three specialized review subagents
 3. **Consolidation** — merges reports, deduplicates findings, surfaces cross-unit issues, produces verdict
 4. **Doc update** — after you respond to findings, considers whether reference docs need updating (always asks first)
+
+In Codex, the coordinator performs triage, dispatches the selected specialist
+prompts from `agents/` to independent sub-agents, waits for their reports, and
+then consolidates them. If the host does not expose sub-agent delegation, the
+skill reports that capability gap instead of claiming that independent phases
+ran.
 
 ---
 

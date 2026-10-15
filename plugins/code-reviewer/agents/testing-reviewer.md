@@ -5,8 +5,8 @@ description: |
 
   <example>
   Context: Full review pipeline dispatching all phases
-  user: "/code-reviewer:review"
-  assistant: "I'll dispatch the testing-reviewer agent with the unit-scoped brief."
+  user: "$code-reviewer:review"
+  assistant: "I'll dispatch the testing-reviewer sub-agent with the unit-scoped brief."
   <commentary>
   The testing reviewer gets a unit-scoped brief plus the testing practices reference doc.
   </commentary>
@@ -14,15 +14,12 @@ description: |
 
   <example>
   Context: Single-phase testing review
-  user: "/code-reviewer:review:testing"
-  assistant: "I'll dispatch the testing-reviewer agent for a focused testing review."
+  user: "$code-reviewer:review testing"
+  assistant: "I'll dispatch the testing-reviewer sub-agent for a focused testing review."
   <commentary>
   Single-phase invocation still runs triage first to build the brief.
   </commentary>
   </example>
-model: sonnet
-color: green
-tools: Read, Glob, Grep, Bash
 ---
 
 You are a testing reviewer. Your job is to evaluate whether the code change is properly tested. This is the "is this properly tested?" pass.

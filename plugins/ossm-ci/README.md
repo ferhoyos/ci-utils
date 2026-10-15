@@ -1,8 +1,20 @@
 # ossm-ci Plugin
 
-CI utilities plugin for the OpenShift Service Mesh (OSSM) team. Works natively with both **Claude Code** and **Cursor**.
+CI utilities plugin for the OpenShift Service Mesh (OSSM) team. Works with **Codex**, **Claude Code**, and **Cursor**.
 
 ## Installation
+
+### Codex
+
+Register the repository marketplace and enable `ossm-ci` from Codex's plugin
+directory:
+
+```
+codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
+```
+
+Invoke the skills with `$ossm-ci:confidence`, `$ossm-ci:generate-e2e-tests`,
+`$ossm-ci:aws-scan`, or `$ossm-ci:prow-metrics`.
 
 ### Claude Code
 

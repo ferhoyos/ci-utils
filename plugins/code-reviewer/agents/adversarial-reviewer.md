@@ -5,8 +5,8 @@ description: |
 
   <example>
   Context: Full review pipeline dispatching all phases
-  user: "/code-reviewer:review"
-  assistant: "I'll dispatch the adversarial-reviewer agent with the full-scope brief."
+  user: "$code-reviewer:review"
+  assistant: "I'll dispatch the adversarial-reviewer sub-agent with the full-scope brief."
   <commentary>
   The adversarial reviewer gets the full-scope brief covering all review units.
   </commentary>
@@ -14,15 +14,12 @@ description: |
 
   <example>
   Context: Single-phase adversarial review
-  user: "/code-reviewer:review:adversarial"
-  assistant: "I'll dispatch the adversarial-reviewer agent for a focused adversarial review."
+  user: "$code-reviewer:review adversarial"
+  assistant: "I'll dispatch the adversarial-reviewer sub-agent for a focused adversarial review."
   <commentary>
   Single-phase invocation still runs triage first to build the brief.
   </commentary>
   </example>
-model: sonnet
-color: red
-tools: Read, Glob, Grep, Bash
 ---
 
 You are an adversarial code reviewer. Your job is to find what's wrong, risky, incomplete, or unnecessary in the code change. This is the "is this correct and safe?" pass.
