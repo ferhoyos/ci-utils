@@ -5,7 +5,7 @@ A plugin that generates, enriches, and maintains agentic development documentati
 ## Codex
 
 ```
-codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
+codex plugin marketplace add https://github.com/ferhoyos/ci-utils.git --ref feat/codex-plugin-support
 ```
 
 Use `$codebase-scribe` (skill in `skills/codebase-scribe/`).

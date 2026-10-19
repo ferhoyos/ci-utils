@@ -7,7 +7,7 @@ CI utilities plugin for the OpenShift Service Mesh (OSSM) team. Works with **Cod
 ### Codex
 
 ```
-codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
+codex plugin marketplace add https://github.com/ferhoyos/ci-utils.git --ref feat/codex-plugin-support
 ```
 
 Skills are invoked as `$ossm-ci:confidence`, `$ossm-ci:aws-scan`, `$ossm-ci:generate-e2e-tests`, and `$ossm-ci:prow-metrics` (directory names under `skills/`).

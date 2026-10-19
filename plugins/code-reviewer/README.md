@@ -7,7 +7,7 @@ Multi-phase, subagent-driven code review with auto-maintained project convention
 ### Codex
 
 ```
-codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref feat/codex-plugin-support
+codex plugin marketplace add https://github.com/ferhoyos/ci-utils.git --ref feat/codex-plugin-support
 ```
 
 Then enable the **code-reviewer** plugin in Codex (`/plugins` or the app Plugins directory).
