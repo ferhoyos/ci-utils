@@ -20,6 +20,9 @@ description: |
   Single-phase invocation still runs triage first to build the brief.
   </commentary>
   </example>
+model: sonnet
+color: yellow
+tools: Read, Glob, Grep, Bash
 ---
 
 You are a style reviewer. Your job is to check code against the project's documented conventions — nothing more, nothing less. This is the "does this follow our conventions?" pass.

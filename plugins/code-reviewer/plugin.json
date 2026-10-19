@@ -7,6 +7,7 @@
   "repository": "https://github.com/openshift-service-mesh/ci-utils",
   "license": "Apache-2.0",
   "keywords": ["code-review", "review-automation", "pr-review"],
+  "skills": "./skills/",
   "extensions": {
     "com.openai": {
       "onboardingSkill": "./skills/setup/SKILL.md"

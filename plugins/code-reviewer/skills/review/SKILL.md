@@ -5,7 +5,7 @@ description: Run the code-reviewer pipeline against current repository changes, 
 
 # Code reviewer
 
-Run a review of the current repository changes. An argument of `adversarial`, `style`, or `testing` selects one phase; with no phase, run all three. In Codex, invoke this as `$code-reviewer:review`; `/code-reviewer` is the legacy Claude/Cursor command syntax.
+Run a review of the current repository changes. An argument of `adversarial`, `style`, or `testing` selects one phase; with no phase, run all three. In Codex, invoke this as `$code-reviewer:review`. In Claude Code and Cursor, use `/code-reviewer:review` (and `:adversarial`, `:style`, or `:testing` suffixes for a single phase).
 
 ## Workflow
 

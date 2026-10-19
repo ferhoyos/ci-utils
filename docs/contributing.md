@@ -21,6 +21,8 @@ Minimal plugin layout:
 
 ```
 plugins/<name>/
+  plugin.json                   # portable agent-plugins.org manifest (skills, extensions)
+  .codex-plugin/plugin.json     # Codex overlay when publishing to Codex
   .claude-plugin/plugin.json    # name, version, description, author, license
   .cursor-plugin/plugin.json    # same schema — required for Cursor support
   commands/<name>.md            # YAML frontmatter (name, description, argument-hint) + prompt
@@ -40,10 +42,11 @@ Checklist before opening a PR:
 
 - [ ] `SKILL.md` has `name` + `description` frontmatter and a clear purpose/workflow/output body
 - [ ] Command `.md` has `name`, `description`, `argument-hint` frontmatter
-- [ ] Agent `.md` has `model`, `color`, `tools` frontmatter with a minimal tool allowlist — `model` optional for plugins shipping to multiple hosts
-- [ ] Plugin listed in `.claude-plugin/marketplace.json` (new plugins only)
-- [ ] Both `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json` present
-- [ ] Version string identical across both `plugin.json` files and both `marketplace.json` entries — for `codebase-scribe`, run `bash plugins/codebase-scribe/scripts/check-sync.sh` (exits 0 when all four agree)
+- [ ] Agent `.md` has `model`, `color`, `tools` frontmatter with a minimal tool allowlist for Claude Code and Cursor — Codex may ignore these fields; keep them for hosts that enforce tool boundaries
+- [ ] Plugin listed in `.claude-plugin/marketplace.json` (new plugins only); add to `.agents/plugins/marketplace.json` when portable + `.codex-plugin/` manifests exist
+- [ ] `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and portable `plugin.json` present; add `.codex-plugin/plugin.json` for Codex
+- [ ] Version string identical across Claude, Cursor, portable, and Codex manifests and marketplace entries — for `codebase-scribe`, run `bash plugins/codebase-scribe/scripts/check-sync.sh` (exits 0 when all agree)
+- [ ] Run `bash scripts/validate-plugin-manifests.sh` after changing manifests or the Codex marketplace
 
 ## Eval
 

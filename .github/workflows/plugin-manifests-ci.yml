@@ -1,0 +1,24 @@
+name: Validate plugin manifests
+
+on:
+  pull_request:
+    paths:
+      - '.agents/**'
+      - 'plugins/**/plugin.json'
+      - 'plugins/**/.codex-plugin/**'
+      - 'scripts/validate-plugin-manifests.sh'
+      - 'plugins/codebase-scribe/scripts/check-sync.sh'
+
+jobs:
+  validate:
+    name: Plugin JSON and version sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Codex and portable manifests
+        run: bash scripts/validate-plugin-manifests.sh
+
+      - name: codebase-scribe version sync
+        run: bash plugins/codebase-scribe/scripts/check-sync.sh

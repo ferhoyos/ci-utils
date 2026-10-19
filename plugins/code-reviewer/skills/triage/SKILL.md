@@ -11,7 +11,7 @@ Analyze the current git diff and produce structured review briefs that subagents
 
 ## When to Use
 
-- **DO:** Use at the start of every `/code-reviewer:review` or `/code-reviewer:review:*` invocation, after the setup guard passes
+- **DO:** Use at the start of every `$code-reviewer:review` (or `/code-reviewer:review` on Claude Code/Cursor), after the setup guard passes
 - **DO NOT:** Use as a standalone review — this produces briefs, not findings
 
 ## Setup Guard
@@ -23,7 +23,7 @@ Before doing any analysis, verify that the project config exists:
 Use whichever path has the config. If both exist, prefer `.code-reviewer/`. Also verify the corresponding `reference/` directory has at least one reference doc.
 
 If neither location has these files, stop and tell the user:
-> "No project configuration found. Run `/code-reviewer:setup` first to analyze your codebase and generate reference docs."
+> "No project configuration found. Run `$code-reviewer:setup` (Codex) or `/code-reviewer:setup` (Claude Code/Cursor) first to analyze your codebase and generate reference docs."
 
 ## Workflow
 

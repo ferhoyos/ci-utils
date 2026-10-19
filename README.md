@@ -44,6 +44,11 @@ $ossm-ci:confidence
 The Codex review workflow writes project guidance under `.code-reviewer/`.
 Existing `.claude/code-reviewer/` files remain supported for Claude Code.
 
+The Codex marketplace lists **ossm-ci**, **code-reviewer**, and **codebase-scribe**
+only (plugins with portable `plugin.json` and `.codex-plugin/` overlays). **envoy-openssl-cve**
+and **ossm-cve-reachability** remain on the Claude Code and Cursor marketplaces until they
+ship the same portable manifests.
+
 ---
 
 ## Claude Code Plugin
@@ -83,12 +88,15 @@ This registers the repo as a marketplace using the `name` field from its `.claud
 /reload-plugins
 ```
 
-### Codex
+### Codex (ossm-cve-reachability)
 
-Codex can also use this skill via a project-local `.codex/skills/ossm-cve-reachability` symlink (create it in the consuming project; it is not committed in this repo). Restart Codex after installing or changing the skill, then invoke it with:
+This plugin is not in `.agents/plugins/marketplace.json` yet. Use a project-local
+`.codex/skills/ossm-cve-reachability` symlink to the plugin skill (create it in the
+consuming project; it is not committed in this repo). Restart Codex after installing,
+then invoke:
 
 ```
-Use $ossm-cve-reachability to analyze CVE-2025-12345.
+$ossm-cve-reachability
 ```
 
 > **What does NOT work**
@@ -119,14 +127,14 @@ Skills in this repository run inside Claude Code or Codex sessions, which means 
 
 ### What skills MUST NOT do
 
-- **Avoid executing cloud CLI commands directly** (AWS, GCP, Azure, kubectl, etc.). Claude is not a trusted executor — use an audited script that the user runs themselves. If you need to run any kind of command ensure that your user has restricted priviledges to avoid any potential damage and you do it following security best practices. For example, if you need to run AWS CLI commands, use an IAM user with read-only permissions and no access to sensitive resources, or if you need to run kubectl commands, use a kubeconfig with read-only permissions unless the skill is specifically designed for cluster administration and the user understands the risks.
+- **Avoid executing cloud CLI commands directly** (AWS, GCP, Azure, kubectl, etc.). The agent session is not a trusted executor — use an audited script that the user runs themselves. If you need to run any kind of command ensure that your user has restricted priviledges to avoid any potential damage and you do it following security best practices. For example, if you need to run AWS CLI commands, use an IAM user with read-only permissions and no access to sensitive resources, or if you need to run kubectl commands, use a kubeconfig with read-only permissions unless the skill is specifically designed for cluster administration and the user understands the risks.
 - **Access secrets, tokens, or credentials** beyond what is strictly needed to read public data. Avoid any skill that requires access to sensitive information unless it is designed with strict security controls and the user is fully aware of the implications.
 
 ### What skills SHOULD do instead
 
 - **Use `allowedTools: []`** fill the allowed tools with the list of tools that the skill needs to run, and make sure to not include any tool that can cause harm if misused (e.g. AWS CLI, kubectl, oc, gcloud, az, etc.). This way you can ensure that the skill cannot execute any command that is not explicitly allowed.
 - **Keep audited scripts in `scripts/`**, version-controlled and reviewable, rather than generating them on the fly. 
-- **Be a reporter, not an actor.** The safest skills take data the user provides and format or analyze it — they do not reach out to external systems on their own. Only create skills that execute commands if there is a clear user need that cannot be met by a non-executing skill, and if you do,make sure that the user is the one pressing the button to run the command, not Claude automatically.
+- **Be a reporter, not an actor.** The safest skills take data the user provides and format or analyze it — they do not reach out to external systems on their own. Only create skills that execute commands if there is a clear user need that cannot be met by a non-executing skill, and if you do, make sure that the user is the one pressing the button to run the command, not the agent automatically.
 - **If you are going to add steps that interact with external systems, add a big warning banner in the skill documentation** so future maintainers understand the risks and guidelines.
 
 ### Executing commands against external systems
@@ -146,7 +154,7 @@ This means: **do not assume the user's local environment has the right tools or 
 
 > If a skill can cause harm without the user noticing, it should not exist.
 
-When in doubt, ask: *could this skill delete something important or expose credentials if Claude misunderstood the task?* If yes, redesign it so the user is always the one pressing the button.
+When in doubt, ask: *could this skill delete something important or expose credentials if the agent misunderstood the task?* If yes, redesign it so the user is always the one pressing the button.
 
 ---
 
@@ -194,7 +202,15 @@ Typical workflow for a new skill:
 
 A skill is ready to merge when `/eval-run` reports all deterministic judges passing at their configured thresholds and the LLM judge mean score meets its minimum. Include the eval infrastructure in the same PR as the skill.
 
-> **For AI contributors**: whenever you add or significantly modify a `SKILL.md`, run the eval workflow above before opening a PR. Do not skip this step — a skill without passing evals is not mergeable.
+### Codex coordinator wrappers
+
+Thin Codex entry skills that only route to an existing command workflow or to
+phase skills already covered by evals (`review`, `setup`, `ci-review`, and the
+top-level `codebase-scribe` coordinator) may ship with **`eval.md` only**,
+documenting which downstream skills and eval suites provide behavioral coverage.
+Add full `eval.yaml` and cases when the wrapper gains logic beyond routing.
+
+> **For AI contributors**: whenever you add or significantly modify a `SKILL.md`, run the eval workflow above before opening a PR. Do not skip this step — a skill without passing evals is not mergeable (except coordinator wrappers documented above).
 
 ---
 
@@ -247,6 +263,7 @@ Standalone scripts that can be run directly from the command line.
 | Script | Description |
 |--------|-------------|
 | `scripts/aws-scan-audited.sh` | Read-only AWS inventory. Scans all regions for EC2, EBS, Elastic IPs, S3, RDS, and ELBs. Outputs two formatted tables directly to the terminal: potentially dangling resources and a complete inventory. No mutating commands anywhere in the file. |
+| `scripts/validate-plugin-manifests.sh` | Validates Codex and portable plugin JSON manifests and marketplace `source.path` entries on pull requests. |
 | `scripts/prow-metrics/collect_ossm_data.py` | Collects Prow CI job data for OSSM repositories and exports a TSV file for Excel import. |
 
 ---
@@ -264,7 +281,10 @@ Configuration and documentation supporting the `/ossm-ci:confidence` plugin comm
 
 ### `plugins/`
 
-The Claude Code skills marketplace structure. Contains plugins with commands and skills installable via `/plugin install`.
+Multi-host plugin packages: Claude (`.claude-plugin/`), Cursor (`.cursor-plugin/`),
+portable `plugin.json`, Codex (`.codex-plugin/`), plus commands, skills, and agents.
+The Codex repo marketplace lives at `.agents/plugins/marketplace.json`. Install on
+Claude Code via `/plugin install`.
 
 ```mermaid
 graph LR

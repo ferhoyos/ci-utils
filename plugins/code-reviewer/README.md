@@ -13,9 +13,12 @@ plugin directory:
 codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
 ```
 
-Use `$code-reviewer:setup` and `$code-reviewer:review` in Codex. The phase
-skills are available as `$code-reviewer:adversarial-review`,
-`$code-reviewer:style-review`, and `$code-reviewer:testing-review`.
+Use `$code-reviewer:setup` and `$code-reviewer:review` in Codex. For a single
+phase, pass an argument: `$code-reviewer:review adversarial`, `$code-reviewer:review style`, or
+`$code-reviewer:review testing`. The coordinator dispatches the prompts in
+`agents/` after triage. The `adversarial-review`, `style-review`, and
+`testing-review` skills are phase instructions for sub-agents and eval harnesses;
+prefer `$code-reviewer:review` so triage and consolidation always run.
 
 ### Claude Code (via marketplace)
 
@@ -103,9 +106,14 @@ ran.
 
 ### `/code-reviewer:ci-review`
 
-Fully autonomous code review for CI pipelines. Runs all three review phases without any user interaction and posts results directly to the PR.
+Fully autonomous code review for CI pipelines.
 
-**What it does differently from `/code-reviewer:review`:**
+| Host | Entry point | Posts to GitHub automatically |
+|------|-------------|-------------------------------|
+| Claude Code | `/code-reviewer:ci-review` | Yes — submitted review + summary comment (see command) |
+| Codex | `$code-reviewer:ci-review` | No — produces a report; posting requires explicit user confirmation |
+
+**What Claude Code `/code-reviewer:ci-review` does differently from `/code-reviewer:review`:**
 
 - **No setup required** — If reference docs don't exist, auto-generates them on the fly using the headless-setup skill (no interactive confirmation)
 - **No pauses** — Every step runs automatically, no user prompts
@@ -123,6 +131,9 @@ See [CI / GitHub Actions](#ci--github-actions) below for setup instructions.
 
 | Skill | Purpose |
 |-------|---------|
+| `setup` | Codex entry: onboard a repo (`$code-reviewer:setup`) |
+| `review` | Codex entry: full or single-phase review (`$code-reviewer:review`) |
+| `ci-review` | Codex entry: non-interactive CI-style review (`$code-reviewer:ci-review`) |
 | `triage` | Diff analysis and review brief generation |
 | `consolidation` | Merge and deduplicate findings from all phases |
 | `doc-update` | Living documentation maintenance after reviews |
