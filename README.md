@@ -23,10 +23,16 @@ Shared utilities to standardize and simplify build, test, and deployment pipelin
 Codex loads plugins from [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) (`ossm-ci`, `code-reviewer`, `codebase-scribe`). Each plugin ships a portable [`plugin.json`](https://agent-plugins.org/) and a [`.codex-plugin/plugin.json`](plugins/code-reviewer/.codex-plugin/plugin.json) overlay pointing at the same `skills/` tree as Claude Code.
 
 ```
-codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
+# Until the Codex marketplace is on main, use the feature branch (or your fork):
+codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref feat/codex-plugin-support
 ```
 
-Example invocations: `$code-reviewer:setup`, `$code-reviewer:review`, `$codebase-scribe`, `$ossm-ci:confidence`. See each plugin's README for details.
+Install and **enable** each plugin from the marketplace, then invoke skills (not Claude `/plugin:*` slash commands):
+
+- `$code-reviewer` — review pipeline (`commands/review.md` is Claude/Cursor only)
+- `$code-reviewer:setup`, `$codebase-scribe`, `$ossm-ci:confidence`
+
+See each plugin README for details.
 
 ---
 

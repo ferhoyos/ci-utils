@@ -7,10 +7,18 @@ Multi-phase, subagent-driven code review with auto-maintained project convention
 ### Codex
 
 ```
-codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
+codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref feat/codex-plugin-support
 ```
 
-Then use `$code-reviewer:setup` and `$code-reviewer:review` (Codex skills in `skills/setup/` and `skills/review/`).
+Then enable the **code-reviewer** plugin in Codex (`/plugins` or the app Plugins directory).
+
+**Codex has no `/code-reviewer` slash command** — `commands/` is for Claude Code only. Invoke:
+
+- `$code-reviewer` or `$code-reviewer:code-reviewer` — full review pipeline (main entry)
+- `$code-reviewer:setup` — project onboarding
+- `$code-reviewer:review` — alias of the same pipeline
+
+You may see phase skills (`adversarial-review`, `style-review`, …) and agent prompts in the picker; those are sub-agent building blocks. Use `$code-reviewer` so triage and consolidation run.
 
 ### Claude Code (via marketplace)
 

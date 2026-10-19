@@ -1,11 +1,11 @@
 ---
 name: review
-description: Run the code-reviewer pipeline against current repository changes, optionally limiting it to adversarial, style, or testing review. Use for a structured code review or merge-readiness assessment.
+description: Alias for the code-reviewer entry skill. Prefer $code-reviewer or $code-reviewer:code-reviewer in Codex; use /code-reviewer:review in Claude Code and Cursor.
 ---
 
-# Code reviewer
+# Code reviewer (`review` skill)
 
-Run a review of the current repository changes. An argument of `adversarial`, `style`, or `testing` selects one phase; with no phase, run all three. In Codex, invoke this as `$code-reviewer:review`. In Claude Code and Cursor, use `/code-reviewer:review` (and `:adversarial`, `:style`, or `:testing` suffixes for a single phase).
+Same workflow as `skills/code-reviewer/SKILL.md`. An argument of `adversarial`, `style`, or `testing` selects one phase; with no phase, run all three.
 
 ## Workflow
 
