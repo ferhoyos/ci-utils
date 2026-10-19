@@ -6,8 +6,6 @@ argument-hint:
 
 # CI Code Review
 
-> **Host:** This command is for **Claude Code** (slash `/code-reviewer:ci-review`). It posts results to GitHub automatically. On **Codex**, use `$code-reviewer:ci-review` instead — that skill runs the same review phases but does **not** post to GitHub unless the user explicitly confirms an external write.
-
 You are running a fully autonomous code review pipeline in a CI environment. There is no human in the loop — every step runs automatically and all output goes to GitHub.
 
 ## CI Context Detection

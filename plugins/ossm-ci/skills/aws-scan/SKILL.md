@@ -1,5 +1,5 @@
 ---
-name: aws-scan
+name: AWS Resources Inventory
 description: Guide the user to download and run the audited AWS inventory script to surface dangling and active resources
 command: /ossm-ci:aws-scan
 ---

@@ -4,16 +4,11 @@ A plugin that generates, enriches, and maintains agentic development documentati
 
 ## Codex
 
-Register the repository marketplace and enable `codebase-scribe` from Codex's
-plugin directory:
-
 ```
 codex plugin marketplace add https://github.com/openshift-service-mesh/ci-utils.git --ref main
 ```
 
-Invoke the workflow with `$codebase-scribe`. Its focused skills are available
-as `$codebase-scribe:scribe-discover`, `$codebase-scribe:scribe-draft`,
-`$codebase-scribe:scribe-maintain`, and `$codebase-scribe:scribe-review`.
+Use `$codebase-scribe` (skill in `skills/codebase-scribe/`).
 
 ## What It Does
 

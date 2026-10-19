@@ -1,5 +1,5 @@
 ---
-name: prow-metrics
+name: Prow CI Execution Metrics
 description: Collect and present Prow CI execution data for OSSM repositories, with summary statistics and TSV export for Excel
 command: /ossm-ci:prow-metrics
 ---

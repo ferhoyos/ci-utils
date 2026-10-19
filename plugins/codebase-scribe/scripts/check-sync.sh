@@ -1,8 +1,8 @@
 #!/bin/bash
-# Version sync check for the codebase-scribe plugin: Claude, Cursor, portable,
-# and Codex plugin.json manifests plus both marketplace.json entries for
-# "codebase-scribe" must declare the identical version string. Exits 0 only when
-# all are present, parse, and agree; otherwise exits non-zero after printing the cause.
+# Four-way version sync check for the codebase-scribe plugin: both plugin.json
+# manifests and both marketplace.json entries for "codebase-scribe" must declare
+# the identical version string. Exits 0 only when all four are present, parse,
+# and agree; otherwise exits non-zero after printing the cause.
 #
 # Layout assumption: the monorepo (plugin.json under plugins/codebase-scribe/,
 # marketplace.json files three directories up). Against a standalone plugin
@@ -14,8 +14,6 @@ repo_root="$(cd "$script_dir/../../.." && pwd)"
 
 plugin_json="$repo_root/plugins/codebase-scribe/.claude-plugin/plugin.json"
 cursor_plugin_json="$repo_root/plugins/codebase-scribe/.cursor-plugin/plugin.json"
-portable_plugin_json="$repo_root/plugins/codebase-scribe/plugin.json"
-codex_plugin_json="$repo_root/plugins/codebase-scribe/.codex-plugin/plugin.json"
 claude_marketplace="$repo_root/.claude-plugin/marketplace.json"
 cursor_marketplace="$repo_root/.cursor-plugin/marketplace.json"
 
@@ -127,8 +125,6 @@ check() {
 
 check "plugin.json (Claude Code)" "$plugin_json" version_from_plugin_json
 check "plugin.json (Cursor)" "$cursor_plugin_json" version_from_plugin_json
-check "plugin.json (portable)" "$portable_plugin_json" version_from_plugin_json
-check "plugin.json (Codex)" "$codex_plugin_json" version_from_plugin_json
 check "marketplace.json (Claude Code)" "$claude_marketplace" version_from_marketplace
 check "marketplace.json (Cursor)" "$cursor_marketplace" version_from_marketplace
 
@@ -147,7 +143,7 @@ if [ "${#versions[@]}" -gt 0 ]; then
 fi
 
 if [ "$status" -eq 0 ]; then
-  echo "OK: all six manifests agree on version $first"
+  echo "OK: all four manifests agree on version $first"
 elif [ "$incomplete" -eq 1 ] && [ "$mismatch" -eq 1 ]; then
   echo "FAIL: one or more manifests could not be read, and the ones that were read do not agree"
 elif [ "$incomplete" -eq 1 ]; then
